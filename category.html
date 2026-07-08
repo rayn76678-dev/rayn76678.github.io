@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Category</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<h1 id="title"></h1>
+
+
+<div class="card">
+
+🌐 网站
+
+</div>
+
+
+<div class="card">
+
+📁 文件
+
+</div>
+
+
+
+<script>
+
+
+let params=
+new URLSearchParams(location.search);
+
+
+document
+.getElementById("title")
+.innerHTML=
+params.get("name");
+
+
+</script>
+
+
+</body>
+
+</html>
