@@ -1,9 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="zh">
 
 <head>
 
 <meta charset="UTF-8">
+
 <title>Rayn Archive</title>
 
 <link rel="stylesheet" href="style.css">
@@ -14,15 +16,83 @@
 <body>
 
 
-<h1>Rayn Archive</h1>
+<div class="layout">
 
 
-<div id="categories"></div>
+<!-- 左侧导航 -->
+
+<aside>
 
 
-<button id="add">
-+
+<h1>Rayn</h1>
+
+<p>
+Student · Explorer
+</p>
+
+
+<hr>
+
+
+<a href="#">
+ABOUT
+</a>
+
+<a href="#">
+PROJECTS
+</a>
+
+<a href="#">
+LANGUAGE
+</a>
+
+<a href="#">
+COMPUTING
+</a>
+
+<a href="#">
+GIS
+</a>
+
+
+<button onclick="addSpace()">
+＋ Add Space
 </button>
+
+
+</aside>
+
+
+
+<!-- 主页面 -->
+
+<main>
+
+
+<h2>
+Personal Archive
+</h2>
+
+
+<p class="intro">
+
+A personal knowledge system about
+language, technology and exploration.
+
+</p>
+
+
+
+<div id="cards">
+
+</div>
+
+
+
+</main>
+
+
+</div>
 
 
 <script src="script.js"></script>
