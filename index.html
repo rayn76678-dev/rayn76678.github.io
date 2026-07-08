@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="zh">
 
 <head>
@@ -19,14 +18,12 @@
 <div class="layout">
 
 
-<!-- 左侧导航 -->
-
 <aside>
 
 
 <h1>Rayn</h1>
 
-<p>
+<p id="subtitle">
 Student · Explorer
 </p>
 
@@ -34,29 +31,36 @@ Student · Explorer
 <hr>
 
 
-<a href="#">
-ABOUT
-</a>
-
-<a href="#">
-PROJECTS
-</a>
-
-<a href="#">
+<h3>
 LANGUAGE
-</a>
-
-<a href="#">
-COMPUTING
-</a>
-
-<a href="#">
-GIS
-</a>
+</h3>
 
 
-<button onclick="addSpace()">
+<div class="languages">
+
+<button onclick="changeLanguage('zh')">
+中文
+</button>
+
+
+<button onclick="changeLanguage('en')">
+English
+</button>
+
+
+<button onclick="changeLanguage('de')">
+Deutsch
+</button>
+
+
+</div>
+
+
+<button class="add"
+onclick="addSpace()">
+
 ＋ Add Space
+
 </button>
 
 
@@ -64,20 +68,21 @@ GIS
 
 
 
-<!-- 主页面 -->
 
 <main>
 
 
-<h2>
+<h2 id="title">
+
 Personal Archive
+
 </h2>
 
 
-<p class="intro">
+<p id="intro">
 
-A personal knowledge system about
-language, technology and exploration.
+A personal knowledge system about language,
+technology and exploration.
 
 </p>
 
@@ -94,6 +99,10 @@ language, technology and exploration.
 
 </div>
 
+
+
+
+<script src="language.js"></script>
 
 <script src="script.js"></script>
 
