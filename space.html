@@ -1,47 +1,274 @@
-<h1 id="title"></h1>
+<!DOCTYPE html>
+
+<html lang="zh">
 
 
-<div class="card">
+<head>
+
+<meta charset="UTF-8">
+
+<title>Space</title>
+
+
+<link rel="stylesheet" href="style.css">
+
+
+</head>
+
+
+
+<body>
+
+
+<div class="layout">
+
+
+<!-- 左侧 -->
+
+
+<aside>
+
+
+<h1>Rayn</h1>
+
+
+<p>
+Student · Explorer
+</p>
+
+
+<hr>
+
+
+<h3>
+LANGUAGE
+</h3>
+
+
+
+<button onclick="changeLanguage('zh')">
+中文
+</button>
+
+
+<button onclick="changeLanguage('en')">
+English
+</button>
+
+
+<button onclick="changeLanguage('de')">
+Deutsch
+</button>
+
+
+
+<br><br>
+
+
+
+<a href="index.html">
+
+← Back Home
+
+</a>
+
+
+
+</aside>
+
+
+
+
+
+<!-- 主体 -->
+
+
+<main>
+
+
+
+<h2 id="spaceTitle">
+
+</h2>
+
+
+<p id="spaceDesc">
+
+</p>
+
+
+
+
+<div class="spaceCards">
+
+
+
+<div class="card"
+onclick="openWebsite()">
+
+
+<h3>
 
 🌐 Website
 
+</h3>
+
+
+<small>
+
+External websites and links
+
+</small>
+
+
 </div>
 
 
-<div class="card">
+
+
+
+
+<div class="card"
+onclick="openFiles()">
+
+
+
+<h3>
 
 📁 Files
 
+</h3>
+
+
+<small>
+
+Documents and resources
+
+</small>
+
+
 </div>
 
 
-<div class="card">
 
-📝 Notes
 
 </div>
 
 
-<div class="card">
 
-🚀 Projects
+</main>
+
+
+
 
 </div>
+
+
+
+
+
+<script src="language.js"></script>
 
 
 
 <script>
 
-let name=
+
+
+let params =
 new URLSearchParams(
 location.search
-)
-.get("name");
+);
+
+
+
+let name =
+params.get("name");
+
+
+
+
+
+let descriptions={
+
+
+GIS:
+
+"Geoinformation Science",
+
+
+CS:
+
+"Programming & Computing",
+
+
+German:
+
+"Deutsch Learning",
+
+
+IELTS:
+
+"English Academic Skills"
+
+
+};
+
+
+
 
 
 document
-.getElementById("title")
-.innerHTML=name;
+.getElementById("spaceTitle")
+.innerHTML=
+name;
+
+
+
+document
+.getElementById("spaceDesc")
+.innerHTML=
+descriptions[name]
+||
+"Personal Knowledge Space";
+
+
+
+
+
+
+function openWebsite(){
+
+
+location.href=
+"website.html?space="
++
+name;
+
+
+}
+
+
+
+
+function openFiles(){
+
+
+location.href=
+"files.html?space="
++
+name;
+
+
+}
+
 
 
 </script>
+
+
+
+</body>
+
+
+</html>
