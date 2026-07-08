@@ -5,12 +5,13 @@ box-sizing:border-box;
 }
 
 
+
 body{
 
 margin:0;
 
 font-family:
-"Inter",
+Inter,
 Arial,
 sans-serif;
 
@@ -32,22 +33,22 @@ min-height:100vh;
 
 
 
-/* 左边 */
+/* sidebar */
+
 
 aside{
 
+position:fixed;
 
 width:260px;
+
+height:100vh;
 
 background:#111827;
 
 color:white;
 
-padding:40px 30px;
-
-position:fixed;
-
-height:100vh;
+padding:45px 35px;
 
 }
 
@@ -55,49 +56,75 @@ height:100vh;
 
 aside h1{
 
-font-size:40px;
+font-size:42px;
 
-margin-bottom:5px;
+margin:0;
 
 }
 
 
-
-aside a{
-
-display:block;
+aside p{
 
 color:#cbd5e1;
 
-text-decoration:none;
+}
 
-margin:25px 0;
 
-font-size:15px;
+
+hr{
+
+border:0;
+
+border-top:1px solid #475569;
+
+margin:30px 0;
 
 }
 
 
 
-aside a:hover{
+aside h3{
 
-color:white;
+font-size:14px;
+
+color:#94a3b8;
 
 }
 
 
 
-button{
+.languages button{
 
-margin-top:50px;
 
-background:white;
+display:block;
 
-border:none;
+width:120px;
+
+margin:10px 0;
+
+padding:8px;
+
+
+border:0;
+
+border-radius:8px;
+
+cursor:pointer;
+
+
+}
+
+
+
+.add{
+
+margin-top:60px;
 
 padding:12px 20px;
 
-border-radius:8px;
+border-radius:10px;
+
+border:0;
 
 cursor:pointer;
 
@@ -105,7 +132,7 @@ cursor:pointer;
 
 
 
-/* 右边 */
+
 
 main{
 
@@ -121,13 +148,13 @@ width:100%;
 
 h2{
 
-font-size:45px;
+font-size:48px;
 
 }
 
 
 
-.intro{
+#intro{
 
 font-size:20px;
 
@@ -137,7 +164,6 @@ color:#64748b;
 
 
 
-/* 卡片 */
 
 
 #cards{
@@ -145,9 +171,10 @@ color:#64748b;
 display:grid;
 
 grid-template-columns:
+
 repeat(3,1fr);
 
-gap:30px;
+gap:35px;
 
 margin-top:50px;
 
@@ -155,24 +182,26 @@ margin-top:50px;
 
 
 
-.card{
 
+
+.card{
 
 background:white;
 
-border-radius:20px;
+padding:35px;
 
-padding:30px;
+border-radius:22px;
 
 box-shadow:
+
 0 10px 30px
 rgba(0,0,0,.08);
 
-
 cursor:pointer;
 
-transition:.3s;
+position:relative;
 
+transition:.3s;
 
 }
 
@@ -188,16 +217,74 @@ transform:translateY(-8px);
 
 .card h3{
 
-font-size:25px;
+font-size:28px;
 
 }
 
 
 
-.tag{
+.card small{
 
 color:#64748b;
 
-font-size:14px;
+}
+
+
+
+.menu{
+
+
+position:absolute;
+
+right:20px;
+
+top:20px;
+
+cursor:pointer;
+
+font-size:22px;
+
+}
+
+
+
+.popup{
+
+
+position:absolute;
+
+right:20px;
+
+top:50px;
+
+background:white;
+
+box-shadow:
+0 5px 20px rgba(0,0,0,.2);
+
+border-radius:10px;
+
+overflow:hidden;
+
+z-index:5;
+
+}
+
+
+
+.popup div{
+
+
+padding:12px 20px;
+
+cursor:pointer;
+
+}
+
+
+
+.popup div:hover{
+
+background:#f1f5f9;
 
 }
