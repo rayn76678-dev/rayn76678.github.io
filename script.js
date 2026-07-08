@@ -1,74 +1,124 @@
-let categories =
-JSON.parse(localStorage.getItem("categories"))
+
+let spaces =
+JSON.parse(
+localStorage.getItem("spaces")
+)
 ||
 [
-"IELTS",
-"German",
-"CS",
-"GIS"
+{
+name:"GIS",
+desc:"Geoinformation Science"
+},
+
+{
+name:"CS",
+desc:"Programming & Computing"
+},
+
+{
+name:"German",
+desc:"Deutsch Learning"
+},
+
+{
+name:"IELTS",
+desc:"English Academic Skills"
+}
+
 ];
+
 
 
 
 function render(){
 
-let box=document.getElementById("categories");
+
+let box=
+document.getElementById("cards");
+
 
 box.innerHTML="";
 
 
-categories.forEach(
-function(name){
+
+spaces.forEach(
+(space)=>{
 
 
-let div=document.createElement("div");
+let card=
+document.createElement("div");
 
 
-div.className="card";
+card.className="card";
 
 
-div.innerHTML=name;
+card.innerHTML=
+`
+<h3>${space.name}</h3>
+
+<p class="tag">
+${space.desc}
+</p>
+
+<p>
+Website · Files · Notes
+</p>
+
+`;
 
 
 
-div.onclick=function(){
+card.onclick=()=>{
 
 location.href=
-"category.html?name="
+"space.html?name="
 +
-name;
-
-}
-
-
-box.appendChild(div);
-
-
-
-}
-
-);
-
+space.name;
 
 }
 
 
 
-document.getElementById("add").onclick=function(){
+box.appendChild(card);
+
+
+
+});
+
+
+}
+
+
+
+
+function addSpace(){
 
 
 let name=
-prompt("输入新分区名称：");
+prompt(
+"New research space:"
+);
+
 
 
 if(name){
 
-categories.push(name);
+
+spaces.push({
+
+name:name,
+
+desc:"Personal Knowledge Space"
+
+});
 
 
 localStorage.setItem(
-"categories",
-JSON.stringify(categories)
+
+"spaces",
+
+JSON.stringify(spaces)
+
 );
 
 
@@ -77,9 +127,7 @@ render();
 
 }
 
-
 }
-
 
 
 render();
