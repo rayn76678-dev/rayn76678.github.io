@@ -1,10 +1,9 @@
-
-let spaces =
-JSON.parse(
+let spaces = JSON.parse(
 localStorage.getItem("spaces")
 )
 ||
 [
+
 {
 name:"GIS",
 desc:"Geoinformation Science"
@@ -30,45 +29,69 @@ desc:"English Academic Skills"
 
 
 
+
+function save(){
+
+localStorage.setItem(
+"spaces",
+JSON.stringify(spaces)
+);
+
+}
+
+
+
+
+
 function render(){
 
 
-let box=
-document.getElementById("cards");
-
+let box=document.getElementById("cards");
 
 box.innerHTML="";
 
 
 
-spaces.forEach(
-(space)=>{
+spaces.forEach((space,index)=>{
 
 
-let card=
-document.createElement("div");
-
+let card=document.createElement("div");
 
 card.className="card";
 
 
 card.innerHTML=
-`
-<h3>${space.name}</h3>
 
-<p class="tag">
+`
+
+<div class="menu"
+onclick="showMenu(event,${index})">
+
+⋮
+
+</div>
+
+
+<h3>
+${space.name}
+</h3>
+
+
+<small>
 ${space.desc}
-</p>
+</small>
+
 
 <p>
-Website · Files · Notes
+Website · Files
 </p>
+
 
 `;
 
 
 
-card.onclick=()=>{
+card.onclick=function(){
 
 location.href=
 "space.html?name="
@@ -91,12 +114,13 @@ box.appendChild(card);
 
 
 
+
 function addSpace(){
 
 
 let name=
 prompt(
-"New research space:"
+"Input new space name:"
 );
 
 
@@ -113,21 +137,127 @@ desc:"Personal Knowledge Space"
 });
 
 
-localStorage.setItem(
-
-"spaces",
-
-JSON.stringify(spaces)
-
-);
-
+save();
 
 render();
 
 
 }
 
+
+
 }
+
+
+
+
+
+
+function showMenu(e,index){
+
+e.stopPropagation();
+
+
+
+let old=document.querySelector(".popup");
+
+if(old)
+old.remove();
+
+
+
+let menu=document.createElement("div");
+
+menu.className="popup";
+
+
+menu.innerHTML=
+
+`
+
+<div onclick="renameSpace(${index})">
+
+Rename
+
+</div>
+
+
+<div onclick="deleteSpace(${index})">
+
+Delete
+
+</div>
+
+`;
+
+
+
+e.target.parentElement.appendChild(menu);
+
+
+
+}
+
+
+
+
+
+function renameSpace(index){
+
+
+let name=
+prompt(
+"New name:",
+spaces[index].name
+);
+
+
+if(name){
+
+spaces[index].name=name;
+
+save();
+
+render();
+
+}
+
+
+}
+
+
+
+
+
+function deleteSpace(index){
+
+
+let yes=
+confirm(
+
+"Are you sure to delete "
++
+spaces[index].name
++
+"?"
+
+);
+
+
+
+if(yes){
+
+spaces.splice(index,1);
+
+save();
+
+render();
+
+}
+
+
+}
+
 
 
 render();
