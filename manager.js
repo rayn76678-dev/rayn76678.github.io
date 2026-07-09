@@ -283,7 +283,9 @@ items.push({
 
 type:"folder",
 
-name:name
+name:name,
+
+children:[]
 
 });
 
@@ -365,9 +367,11 @@ if(name){
 
 items.push({
 
-type:"file",
+type:"folder",
 
-name:name
+name:name,
+
+children:[]
 
 });
 
