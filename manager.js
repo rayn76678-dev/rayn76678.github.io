@@ -1,6 +1,7 @@
 let params =
-new URLSearchParams(location.search);
-
+new URLSearchParams(
+location.search
+);
 
 
 let space =
@@ -11,19 +12,8 @@ let type =
 params.get("type");
 
 
-
-document
-.getElementById("title")
-.innerHTML=
-space+" / "+type;
-
-
-
-document
-.getElementById("back")
-.href=
-"space.html?name="+space;
-
+let folder =
+params.get("folder");
 
 
 
@@ -32,12 +22,7 @@ space+"_"+type;
 
 
 
-let folderIndex =
-params.get("folder");
-
-
-
-let root =
+let data =
 JSON.parse(
 localStorage.getItem(key)
 )
@@ -46,28 +31,60 @@ localStorage.getItem(key)
 
 
 
-let items=root;
+
+// 返回按钮
+
+document
+.getElementById("backSpace")
+.href=
+"space.html?name="+space;
 
 
 
-if(folderIndex!==null){
+// 标题
 
-items=
-root[folderIndex].children;
+document
+.getElementById("pageTitle")
+.innerHTML=
+space+" / "+type;
+
+
+
+
+
+// 当前目录
+
+let current = data;
+
+
+
+if(folder!==null){
+
+
+current =
+data[folder].children;
+
 
 }
 
 
 
 
-// 根据类型改变导入按钮
+
+// 初始化导入按钮
 
 
-if(type=="Website"){
+let importBtn =
+document.getElementById(
+"importBtn"
+);
 
-document
-.getElementById("importButton")
-.innerHTML=
+
+
+if(type==="Website"){
+
+
+importBtn.innerHTML=
 "Import Website";
 
 
@@ -75,9 +92,7 @@ document
 else{
 
 
-document
-.getElementById("importButton")
-.innerHTML=
+importBtn.innerHTML=
 "Import File";
 
 
@@ -85,23 +100,18 @@ document
 
 
 
+importBtn.onclick=function(){
 
 
+if(type==="Website"){
 
-
-document
-.getElementById("importButton")
-.onclick=function(){
-
-
-if(type=="Website"){
-
-importWebsite();
+addWebsite();
 
 }
+
 else{
 
-importFile();
+addFile();
 
 }
 
@@ -113,12 +123,11 @@ importFile();
 
 
 
-
 function save(){
 
 localStorage.setItem(
 key,
-JSON.stringify(items)
+JSON.stringify(data)
 );
 
 }
@@ -131,33 +140,36 @@ function render(){
 
 
 let box =
-document.getElementById("items");
+document.getElementById(
+"cards"
+);
 
 
 box.innerHTML="";
 
 
 
-items.forEach((item,index)=>{
+current.forEach(
+(item,index)=>{
 
 
 let card =
-document.createElement("div");
+document.createElement(
+"div"
+);
+
 
 card.className="card";
 
 
 
-
-if(item.type=="folder"){
-
-
 card.innerHTML=
+
 
 `
 
 <div class="menu"
-onclick="showMenu(event,${index})">
+onclick="openMenu(event,${index})">
 
 ⋮
 
@@ -166,116 +178,60 @@ onclick="showMenu(event,${index})">
 
 <h3>
 
-📁 ${item.name}
+${item.type==="folder"
+?
+"📁 "
+:
+(type==="Website"?"🌐 ":"📄 ")
+}
+
+${item.name}
 
 </h3>
 
 
 <p>
-Folder
+
+${item.type==="folder"
+?
+"Folder"
+:
+item.info||"File"
+}
+
 </p>
+
 
 `;
 
+
+
+
+
+if(item.type==="folder"){
 
 
 card.onclick=function(){
 
-openFolder(index);
+
+location.href=
+
+"manager.html?space="
++
+space+
+"&type="
++
+type+
+"&folder="
++
+getRealIndex(index);
+
 
 };
 
 
-}
-
-
-card.innerHTML=
-
-`
-
-<div class="menu"
-onclick="showMenu(event,${index})">
-
-⋮
-
-</div>
-
-
-<h3>
-
-📁 ${item.name}
-
-</h3>
-
-
-<p>
-Folder
-</p>
-
-`;
-
-
 
 }
-
-else{
-
-
-if(type=="Website"){
-
-
-card.innerHTML=
-
-`
-
-<h3>
-
-🌐 ${item.name}
-
-</h3>
-
-
-<p>
-
-${item.url}
-
-</p>
-
-`;
-
-
-
-}
-
-
-else{
-
-
-card.innerHTML=
-
-`
-
-<h3>
-
-📄 ${item.name}
-
-</h3>
-
-
-<p>
-
-File
-
-</p>
-
-`;
-
-
-}
-
-
-}
-
 
 
 
@@ -287,6 +243,17 @@ box.appendChild(card);
 });
 
 
+}
+
+
+
+
+
+// 找真实index
+
+function getRealIndex(i){
+
+return data.indexOf(current[i]);
 
 }
 
@@ -294,26 +261,30 @@ box.appendChild(card);
 
 
 
-
-function showAdd(){
+function toggleMenu(){
 
 
 let menu =
-document.getElementById("menu");
+document.getElementById(
+"addMenu"
+);
 
 
-if(menu.style.display=="none")
+if(menu.style.display==="none"){
 
 menu.style.display="block";
 
+}
 
-else
+else{
 
 menu.style.display="none";
 
+}
 
 
 }
+
 
 
 
@@ -330,10 +301,11 @@ prompt(
 
 
 
-if(name){
+if(!name)return;
 
 
-items.push({
+
+current.push({
 
 type:"folder",
 
@@ -344,6 +316,7 @@ children:[]
 });
 
 
+
 save();
 
 render();
@@ -352,14 +325,13 @@ render();
 }
 
 
-}
 
 
 
 
 
 
-function importWebsite(){
+function addWebsite(){
 
 
 let name =
@@ -375,17 +347,18 @@ prompt(
 
 
 
-if(name&&url){
+if(!name||!url)
+return;
 
 
-items.push({
+
+current.push({
 
 type:"website",
 
 name:name,
 
-url:url
-
+info:url
 
 });
 
@@ -399,14 +372,11 @@ render();
 
 
 
-}
 
 
 
 
-
-
-function importFile(){
+function addFile(){
 
 
 let name =
@@ -416,16 +386,18 @@ prompt(
 
 
 
-if(name){
+if(!name)
+return;
 
 
-items.push({
 
-type:"folder",
+current.push({
+
+type:"file",
 
 name:name,
 
-children:[]
+info:"File"
 
 });
 
@@ -438,34 +410,26 @@ render();
 }
 
 
-}
 
 
 
 
 
-
-function showMenu(e,index){
+function openMenu(e,index){
 
 
 e.stopPropagation();
 
 
 
-let old =
-document.querySelector(".popup");
-
-
-if(old)
-old.remove();
-
-
-
 let menu =
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 
 menu.className="popup";
+
 
 
 menu.innerHTML=
@@ -493,8 +457,9 @@ e.target.parentElement
 .appendChild(menu);
 
 
-
 }
+
+
 
 
 
@@ -507,7 +472,7 @@ function renameItem(index){
 let name =
 prompt(
 "New name:",
-items[index].name
+current[index].name
 );
 
 
@@ -515,7 +480,7 @@ items[index].name
 if(name){
 
 
-items[index].name=name;
+current[index].name=name;
 
 
 save();
@@ -526,8 +491,9 @@ render();
 }
 
 
-
 }
+
+
 
 
 
@@ -541,7 +507,7 @@ if(confirm(
 )){
 
 
-items.splice(index,1);
+current.splice(index,1);
 
 
 save();
@@ -556,52 +522,6 @@ render();
 
 
 
-function openFolder(index){
 
-
-let folder=
-items[index];
-
-
-localStorage.setItem(
-"currentFolder",
-JSON.stringify(folder)
-);
-
-
-
-location.href=
-
-"manager.html?space="
-+
-space
-+
-"&type="
-+
-type
-+
-"&folder="
-+
-index;
-
-
-}
 
 render();
-
-let breadcrumb=
-document.getElementById("breadcrumb");
-
-
-if(folderIndex!==null){
-
-breadcrumb.innerHTML=
-"Folder";
-
-}
-else{
-
-breadcrumb.innerHTML=
-"Root";
-
-}
