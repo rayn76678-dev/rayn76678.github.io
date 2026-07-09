@@ -1,4 +1,5 @@
-let spaces = JSON.parse(
+let spaces=
+JSON.parse(
 localStorage.getItem("spaces")
 )
 ||
@@ -11,22 +12,20 @@ desc:"Geoinformation Science"
 
 {
 name:"CS",
-desc:"Programming & Computing"
+desc:"Programming and Computing"
 },
 
 {
 name:"German",
-desc:"Deutsch Learning"
+desc:"German Language Learning"
 },
 
 {
 name:"IELTS",
-desc:"English Academic Skills"
+desc:"Academic English"
 }
 
 ];
-
-
 
 
 
@@ -42,20 +41,22 @@ JSON.stringify(spaces)
 
 
 
-
 function render(){
 
 
-let box=document.getElementById("cards");
+let box=document
+.getElementById("cards");
+
 
 box.innerHTML="";
 
 
 
-spaces.forEach((space,index)=>{
+spaces.forEach((s,i)=>{
 
 
 let card=document.createElement("div");
+
 
 card.className="card";
 
@@ -65,7 +66,7 @@ card.innerHTML=
 `
 
 <div class="menu"
-onclick="showMenu(event,${index})">
+onclick="menu(event,${i})">
 
 ⋮
 
@@ -73,13 +74,13 @@ onclick="showMenu(event,${index})">
 
 
 <h3>
-${space.name}
+${s.name}
 </h3>
 
 
-<small>
-${space.desc}
-</small>
+<p>
+${s.desc}
+</p>
 
 
 <p>
@@ -91,19 +92,17 @@ Website · Files
 
 
 
-card.onclick=function(){
+card.onclick=()=>{
 
 location.href=
 "space.html?name="
-+
-space.name;
++s.name;
 
 }
 
 
 
 box.appendChild(card);
-
 
 
 });
@@ -120,9 +119,8 @@ function addSpace(){
 
 let name=
 prompt(
-"Input new space name:"
+"Space name:"
 );
-
 
 
 if(name){
@@ -141,48 +139,31 @@ save();
 
 render();
 
+}
+
 
 }
 
 
 
-}
 
 
+function menu(e,i){
 
-
-
-
-function showMenu(e,index){
 
 e.stopPropagation();
 
 
+let p=document.createElement("div");
 
-let old=document.querySelector(".popup");
-
-if(old)
-old.remove();
+p.className="popup";
 
 
-
-let menu=document.createElement("div");
-
-menu.className="popup";
-
-
-menu.innerHTML=
+p.innerHTML=
 
 `
 
-<div onclick="renameSpace(${index})">
-
-Rename
-
-</div>
-
-
-<div onclick="deleteSpace(${index})">
+<div onclick="removeSpace(${i})">
 
 Delete
 
@@ -191,9 +172,8 @@ Delete
 `;
 
 
-
-e.target.parentElement.appendChild(menu);
-
+e.target.parentElement
+.appendChild(p);
 
 
 }
@@ -202,19 +182,13 @@ e.target.parentElement.appendChild(menu);
 
 
 
-function renameSpace(index){
+function removeSpace(i){
 
 
-let name=
-prompt(
-"New name:",
-spaces[index].name
-);
+if(confirm("Delete this space?")){
 
 
-if(name){
-
-spaces[index].name=name;
+spaces.splice(i,1);
 
 save();
 
@@ -225,38 +199,6 @@ render();
 
 }
 
-
-
-
-
-function deleteSpace(index){
-
-
-let yes=
-confirm(
-
-"Are you sure to delete "
-+
-spaces[index].name
-+
-"?"
-
-);
-
-
-
-if(yes){
-
-spaces.splice(index,1);
-
-save();
-
-render();
-
-}
-
-
-}
 
 
 
