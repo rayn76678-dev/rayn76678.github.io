@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh">
-
+<html>
 
 <head>
 
@@ -9,12 +8,9 @@
 
 <title>Space</title>
 
-
 <link rel="stylesheet" href="style.css">
 
-
 </head>
-
 
 
 <body>
@@ -23,16 +19,16 @@
 <div class="layout">
 
 
-<!-- 左侧 -->
 
+<!-- sidebar -->
 
-<aside>
+<div class="sidebar">
 
 
 <h1>Rayn</h1>
 
 
-<p>
+<p class="role">
 Student · Explorer
 </p>
 
@@ -40,30 +36,9 @@ Student · Explorer
 <hr>
 
 
-<h3>
-LANGUAGE
-</h3>
-
-
-
-<button onclick="changeLanguage('zh')">
-中文
-</button>
-
-
-<button onclick="changeLanguage('en')">
-English
-</button>
-
-
-<button onclick="changeLanguage('de')">
-Deutsch
-</button>
-
-
-
-<br><br>
-
+<p>
+Archive
+</p>
 
 
 <a href="index.html">
@@ -73,38 +48,36 @@ Deutsch
 </a>
 
 
-
-</aside>
-
+</div>
 
 
 
 
-<!-- 主体 -->
+
+<!-- main -->
 
 
-<main>
+<div class="main">
 
 
-
-<h2 id="spaceTitle">
+<h2 id="spaceName">
 
 </h2>
 
 
-<p id="spaceDesc">
+<p class="description" id="spaceDesc">
 
 </p>
 
 
 
 
-<div class="spaceCards">
+<div class="cards">
 
 
 
 <div class="card"
-onclick="openWebsite()">
+onclick="openManager('Website')">
 
 
 <h3>
@@ -114,11 +87,11 @@ onclick="openWebsite()">
 </h3>
 
 
-<small>
+<p>
 
-External websites and links
+Manage websites and links
 
-</small>
+</p>
 
 
 </div>
@@ -129,8 +102,7 @@ External websites and links
 
 
 <div class="card"
-onclick="openFiles()">
-
+onclick="openManager('Files')">
 
 
 <h3>
@@ -140,24 +112,14 @@ onclick="openFiles()">
 </h3>
 
 
-<small>
+<p>
 
-Documents and resources
+Manage documents and resources
 
-</small>
-
-
-</div>
-
-
+</p>
 
 
 </div>
-
-
-
-</main>
-
 
 
 
@@ -165,20 +127,21 @@ Documents and resources
 
 
 
+</div>
 
 
-<script src="language.js"></script>
+
+</div>
+
+
 
 
 
 <script>
 
 
-
 let params =
-new URLSearchParams(
-location.search
-);
+new URLSearchParams(location.search);
 
 
 
@@ -187,48 +150,39 @@ params.get("name");
 
 
 
-
-
-let descriptions={
+let desc={
 
 
 GIS:
-
 "Geoinformation Science",
 
 
 CS:
-
-"Programming & Computing",
+"Programming and Computing",
 
 
 German:
-
-"Deutsch Learning",
+"German Language Learning",
 
 
 IELTS:
-
-"English Academic Skills"
+"Academic English"
 
 
 };
 
 
 
-
-
 document
-.getElementById("spaceTitle")
-.innerHTML=
-name;
+.getElementById("spaceName")
+.innerHTML=name;
 
 
 
 document
 .getElementById("spaceDesc")
 .innerHTML=
-descriptions[name]
+desc[name]
 ||
 "Personal Knowledge Space";
 
@@ -237,27 +191,19 @@ descriptions[name]
 
 
 
-function openWebsite(){
+
+function openManager(type){
 
 
 location.href=
-"website.html?space="
+
+"manager.html?space="
 +
-name;
-
-
-}
-
-
-
-
-function openFiles(){
-
-
-location.href=
-"files.html?space="
+name
 +
-name;
+"&type="
++
+type;
 
 
 }
@@ -267,8 +213,6 @@ name;
 </script>
 
 
-
 </body>
-
 
 </html>
