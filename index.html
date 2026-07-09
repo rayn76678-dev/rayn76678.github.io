@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="zh">
+
+<html>
+
 
 <head>
 
@@ -12,97 +14,94 @@
 </head>
 
 
+
 <body>
 
 
 <div class="layout">
 
 
-<aside>
+
+<div class="sidebar">
 
 
 <h1>Rayn</h1>
 
-<p id="subtitle">
+
+<p class="role">
+
 Student · Explorer
+
 </p>
 
 
 <hr>
 
 
-<h3>
-LANGUAGE
-</h3>
+
+<p>
+Archive
+</p>
 
 
-<div class="languages">
 
-<button onclick="changeLanguage('zh')">
-中文
-</button>
-
-
-<button onclick="changeLanguage('en')">
-English
-</button>
-
-
-<button onclick="changeLanguage('de')">
-Deutsch
-</button>
-
-
-</div>
-
-
-<button class="add"
-onclick="addSpace()">
+<button onclick="addSpace()">
 
 ＋ Add Space
 
 </button>
 
 
-</aside>
+
+</div>
 
 
 
 
-<main>
 
 
-<h2 id="title">
+<div class="main">
 
+
+<div class="top">
+
+
+<div>
+
+<h2>
 Personal Archive
-
 </h2>
 
 
-<p id="intro">
+<p class="description">
 
-A personal knowledge system about language,
-technology and exploration.
+A personal knowledge system about technology,
+language and exploration.
 
 </p>
 
-
-
-<div id="cards">
-
 </div>
 
-
-
-</main>
 
 
 </div>
 
 
 
+<div id="cards" class="cards">
 
-<script src="language.js"></script>
+</div>
+
+
+
+</div>
+
+
+
+
+</div>
+
+
 
 <script src="script.js"></script>
 
