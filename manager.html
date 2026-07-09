@@ -19,8 +19,6 @@
 <div class="layout">
 
 
-<!-- sidebar -->
-
 <div class="sidebar">
 
 
@@ -36,21 +34,16 @@ Student · Explorer
 
 
 <a href="index.html">
-
 ← Home
-
 </a>
 
 
 <br><br>
 
 
-<a id="back">
-
+<a id="backSpace">
 ← Back Space
-
 </a>
-
 
 
 </div>
@@ -59,11 +52,7 @@ Student · Explorer
 
 
 
-<!-- main -->
-
-
 <div class="main">
-
 
 
 <div class="top">
@@ -72,28 +61,21 @@ Student · Explorer
 <div>
 
 
-<h2 id="title">
-
+<h2 id="pageTitle">
 </h2>
 
 
 <p class="description">
-
 Knowledge Management
-
 </p>
 
-<p id="breadcrumb">
-
-</p>
 
 </div>
 
 
 
-
 <div class="plus"
-onclick="showAdd()">
+onclick="toggleMenu()">
 
 +
 
@@ -106,34 +88,29 @@ onclick="showAdd()">
 
 
 
-
-<div id="menu"
+<div id="addMenu"
 class="popup"
-style="display:none">
+style="display:none;">
 
 
 <div onclick="createFolder()">
-
 New Folder
+</div>
+
+
+<div id="importBtn">
+</div>
+
 
 </div>
 
 
-<div id="importButton">
-
-</div>
-
-
-</div>
 
 
 
-
-
-<div id="items"
+<div id="cards"
 class="cards">
 
-
 </div>
 
 
@@ -144,6 +121,7 @@ class="cards">
 
 
 </div>
+
 
 
 
