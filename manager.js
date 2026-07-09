@@ -588,3 +588,20 @@ index;
 }
 
 render();
+
+let breadcrumb=
+document.getElementById("breadcrumb");
+
+
+if(folderIndex!==null){
+
+breadcrumb.innerHTML=
+"Folder";
+
+}
+else{
+
+breadcrumb.innerHTML=
+"Root";
+
+}
