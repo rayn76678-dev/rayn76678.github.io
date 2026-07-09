@@ -539,5 +539,35 @@ render();
 
 
 
+function openFolder(index){
+
+
+let folder=
+items[index];
+
+
+localStorage.setItem(
+"currentFolder",
+JSON.stringify(folder)
+);
+
+
+
+location.href=
+
+"manager.html?space="
++
+space
++
+"&type="
++
+type
++
+"&folder="
++
+index;
+
+
+}
 
 render();
