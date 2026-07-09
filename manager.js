@@ -1,9 +1,5 @@
-// 获取参数
-
 let params =
-new URLSearchParams(
-location.search
-);
+new URLSearchParams(location.search);
 
 
 
@@ -15,17 +11,13 @@ let type =
 params.get("type");
 
 
-
 let folderIndex =
 params.get("folder");
 
 
 
-
-// 数据保存位置
-
 let key =
-space + "_" + type;
+space+"_"+type;
 
 
 
@@ -40,55 +32,37 @@ localStorage.getItem(key)
 
 
 
-// 返回按钮
-
 document
 .getElementById("backSpace")
 .href =
-"space.html?name=" + space;
+"space.html?name="+space;
 
 
 
-
-
-// 标题
 
 document
 .getElementById("pageTitle")
 .innerHTML =
-space + " / " + type;
+space+" / "+type;
 
 
 
 
 
-// 当前目录
-
-let current = root;
+let current=root;
 
 
 
-if(folderIndex !== null){
-
-
-if(root[folderIndex]){
-
+if(folderIndex!==null){
 
 current =
 root[folderIndex].children;
 
-
-}
-
-
 }
 
 
 
 
-
-
-// 设置导入按钮
 
 
 let importBtn =
@@ -96,19 +70,16 @@ document.getElementById("importBtn");
 
 
 
-if(type === "Website"){
+if(type==="Website"){
 
-
-importBtn.innerHTML =
+importBtn.innerHTML=
 "Import Website";
 
 
-}
-
-else{
+}else{
 
 
-importBtn.innerHTML =
+importBtn.innerHTML=
 "Import File";
 
 
@@ -127,18 +98,18 @@ if(type==="Website"){
 addWebsite();
 
 
-}
-
-else{
+}else{
 
 
-addFile();
+chooseFile();
 
 
 }
 
 
 };
+
+
 
 
 
@@ -166,6 +137,7 @@ JSON.stringify(root)
 
 
 
+
 function render(){
 
 
@@ -174,8 +146,6 @@ document.getElementById("cards");
 
 
 box.innerHTML="";
-
-
 
 
 
@@ -191,31 +161,25 @@ card.className="card";
 
 
 
-let icon="";
+let icon;
 
 
 
 if(item.type==="folder"){
 
-
 icon="📁";
-
 
 }
 
-else if(type==="Website"){
-
+else if(item.type==="website"){
 
 icon="🌐";
-
 
 }
 
 else{
 
-
 icon="📄";
-
 
 }
 
@@ -224,7 +188,6 @@ icon="📄";
 
 
 card.innerHTML=
-
 
 `
 
@@ -247,20 +210,11 @@ ${item.name}
 
 <p>
 
-${item.type==="folder"
-?
-"Folder"
-:
-(item.info || "")
-
-}
+${item.info || item.type}
 
 </p>
 
-
 `;
-
-
 
 
 
@@ -272,12 +226,12 @@ if(item.type==="folder"){
 card.onclick=function(){
 
 
-let realIndex =
+let id =
 root.indexOf(item);
 
 
 
-location.href =
+location.href=
 
 "manager.html?space="
 +
@@ -289,18 +243,13 @@ type
 +
 "&folder="
 +
-realIndex;
-
+id;
 
 
 };
 
 
-
 }
-
-
-
 
 
 
@@ -329,22 +278,12 @@ document.getElementById("addMenu");
 
 
 
-if(menu.style.display==="none"){
-
-
-menu.style.display="block";
-
-
-}
-
-else{
-
-
-menu.style.display="none";
-
-
-}
-
+menu.style.display =
+menu.style.display==="block"
+?
+"none"
+:
+"block";
 
 
 }
@@ -399,6 +338,7 @@ render();
 
 
 
+
 function addWebsite(){
 
 
@@ -416,7 +356,7 @@ prompt(
 
 
 
-if(!name || !url)
+if(!name||!url)
 return;
 
 
@@ -448,17 +388,30 @@ render();
 
 
 
-function addFile(){
+function chooseFile(){
 
 
-let name =
-prompt(
-"File name:"
+let input =
+document.getElementById(
+"fileInput"
 );
 
 
 
-if(!name)
+input.click();
+
+
+
+input.onchange=function(){
+
+
+
+let file =
+input.files[0];
+
+
+
+if(!file)
 return;
 
 
@@ -467,9 +420,9 @@ current.push({
 
 type:"file",
 
-name:name,
+name:file.name,
 
-info:"File"
+info:file.type || "File"
 
 });
 
@@ -478,6 +431,11 @@ info:"File"
 save();
 
 render();
+
+
+
+};
+
 
 
 }
@@ -497,23 +455,11 @@ e.stopPropagation();
 
 
 
-let old =
-document.querySelector(".popup");
-
-
-if(old)
-old.remove();
-
-
-
-
 let menu =
 document.createElement("div");
 
 
-
 menu.className="popup";
-
 
 
 menu.innerHTML=
@@ -532,7 +478,6 @@ Rename
 Delete
 
 </div>
-
 
 `;
 
@@ -581,8 +526,8 @@ render();
 }
 
 
-
 }
+
 
 
 
@@ -612,7 +557,6 @@ render();
 
 
 }
-
 
 
 
