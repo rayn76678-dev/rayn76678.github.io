@@ -356,3 +356,24 @@ justify-content:center;
 font-size:30px;
 
 }
+
+.cards{
+
+display:grid;
+
+grid-template-columns:
+repeat(3,280px);
+
+gap:35px;
+
+margin-top:50px;
+
+}
+
+
+
+.card{
+
+min-height:180px;
+
+}
