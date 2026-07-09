@@ -1,7 +1,10 @@
+// 获取参数
+
 let params =
 new URLSearchParams(
 location.search
 );
+
 
 
 let space =
@@ -12,17 +15,21 @@ let type =
 params.get("type");
 
 
-let folder =
+
+let folderIndex =
 params.get("folder");
 
 
 
+
+// 数据保存位置
+
 let key =
-space+"_"+type;
+space + "_" + type;
 
 
 
-let data =
+let root =
 JSON.parse(
 localStorage.getItem(key)
 )
@@ -32,12 +39,15 @@ localStorage.getItem(key)
 
 
 
+
 // 返回按钮
 
 document
 .getElementById("backSpace")
-.href=
-"space.html?name="+space;
+.href =
+"space.html?name=" + space;
+
+
 
 
 
@@ -45,8 +55,8 @@ document
 
 document
 .getElementById("pageTitle")
-.innerHTML=
-space+" / "+type;
+.innerHTML =
+space + " / " + type;
 
 
 
@@ -54,15 +64,21 @@ space+" / "+type;
 
 // 当前目录
 
-let current = data;
+let current = root;
 
 
 
-if(folder!==null){
+if(folderIndex !== null){
+
+
+if(root[folderIndex]){
 
 
 current =
-data[folder].children;
+root[folderIndex].children;
+
+
+}
 
 
 }
@@ -71,32 +87,34 @@ data[folder].children;
 
 
 
-// 初始化导入按钮
+
+// 设置导入按钮
 
 
 let importBtn =
-document.getElementById(
-"importBtn"
-);
+document.getElementById("importBtn");
 
 
 
-if(type==="Website"){
+if(type === "Website"){
 
 
-importBtn.innerHTML=
+importBtn.innerHTML =
 "Import Website";
 
 
 }
+
 else{
 
 
-importBtn.innerHTML=
+importBtn.innerHTML =
 "Import File";
 
 
 }
+
+
 
 
 
@@ -105,13 +123,17 @@ importBtn.onclick=function(){
 
 if(type==="Website"){
 
+
 addWebsite();
+
 
 }
 
 else{
 
+
 addFile();
+
 
 }
 
@@ -123,14 +145,22 @@ addFile();
 
 
 
+
 function save(){
 
+
 localStorage.setItem(
+
 key,
-JSON.stringify(data)
+
+JSON.stringify(root)
+
 );
 
+
 }
+
+
 
 
 
@@ -140,12 +170,12 @@ function render(){
 
 
 let box =
-document.getElementById(
-"cards"
-);
+document.getElementById("cards");
 
 
 box.innerHTML="";
+
+
 
 
 
@@ -154,12 +184,42 @@ current.forEach(
 
 
 let card =
-document.createElement(
-"div"
-);
+document.createElement("div");
 
 
 card.className="card";
+
+
+
+let icon="";
+
+
+
+if(item.type==="folder"){
+
+
+icon="📁";
+
+
+}
+
+else if(type==="Website"){
+
+
+icon="🌐";
+
+
+}
+
+else{
+
+
+icon="📄";
+
+
+}
+
+
 
 
 
@@ -178,12 +238,7 @@ onclick="openMenu(event,${index})">
 
 <h3>
 
-${item.type==="folder"
-?
-"📁 "
-:
-(type==="Website"?"🌐 ":"📄 ")
-}
+${icon}
 
 ${item.name}
 
@@ -196,7 +251,8 @@ ${item.type==="folder"
 ?
 "Folder"
 :
-item.info||"File"
+(item.info || "")
+
 }
 
 </p>
@@ -208,23 +264,33 @@ item.info||"File"
 
 
 
+
+
 if(item.type==="folder"){
 
 
 card.onclick=function(){
 
 
-location.href=
+let realIndex =
+root.indexOf(item);
+
+
+
+location.href =
 
 "manager.html?space="
 +
-space+
+space
++
 "&type="
 +
-type+
+type
++
 "&folder="
 +
-getRealIndex(index);
+realIndex;
+
 
 
 };
@@ -232,6 +298,8 @@ getRealIndex(index);
 
 
 }
+
+
 
 
 
@@ -249,14 +317,6 @@ box.appendChild(card);
 
 
 
-// 找真实index
-
-function getRealIndex(i){
-
-return data.indexOf(current[i]);
-
-}
-
 
 
 
@@ -265,25 +325,31 @@ function toggleMenu(){
 
 
 let menu =
-document.getElementById(
-"addMenu"
-);
+document.getElementById("addMenu");
+
 
 
 if(menu.style.display==="none"){
 
+
 menu.style.display="block";
+
 
 }
 
 else{
 
+
 menu.style.display="none";
 
+
 }
 
 
+
 }
+
+
 
 
 
@@ -301,7 +367,8 @@ prompt(
 
 
 
-if(!name)return;
+if(!name)
+return;
 
 
 
@@ -331,6 +398,7 @@ render();
 
 
 
+
 function addWebsite(){
 
 
@@ -340,6 +408,7 @@ prompt(
 );
 
 
+
 let url =
 prompt(
 "Website URL:"
@@ -347,7 +416,7 @@ prompt(
 
 
 
-if(!name||!url)
+if(!name || !url)
 return;
 
 
@@ -363,12 +432,15 @@ info:url
 });
 
 
+
 save();
 
 render();
 
 
 }
+
+
 
 
 
@@ -402,12 +474,15 @@ info:"File"
 });
 
 
+
 save();
 
 render();
 
 
 }
+
+
 
 
 
@@ -422,10 +497,19 @@ e.stopPropagation();
 
 
 
+let old =
+document.querySelector(".popup");
+
+
+if(old)
+old.remove();
+
+
+
+
 let menu =
-document.createElement(
-"div"
-);
+document.createElement("div");
+
 
 
 menu.className="popup";
@@ -449,6 +533,7 @@ Delete
 
 </div>
 
+
 `;
 
 
@@ -457,7 +542,9 @@ e.target.parentElement
 .appendChild(menu);
 
 
+
 }
+
 
 
 
@@ -471,8 +558,11 @@ function renameItem(index){
 
 let name =
 prompt(
+
 "New name:",
+
 current[index].name
+
 );
 
 
@@ -491,7 +581,10 @@ render();
 }
 
 
+
 }
+
+
 
 
 
@@ -519,6 +612,9 @@ render();
 
 
 }
+
+
+
 
 
 
