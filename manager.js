@@ -162,6 +162,43 @@ Folder
 
 
 
+card.onclick=function(){
+
+openFolder(index);
+
+};
+
+
+}
+
+
+card.innerHTML=
+
+`
+
+<div class="menu"
+onclick="showMenu(event,${index})">
+
+⋮
+
+</div>
+
+
+<h3>
+
+📁 ${item.name}
+
+</h3>
+
+
+<p>
+Folder
+</p>
+
+`;
+
+
+
 }
 
 else{
