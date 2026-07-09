@@ -32,13 +32,30 @@ space+"_"+type;
 
 
 
-let items =
+let folderIndex =
+params.get("folder");
+
+
+
+let root =
 JSON.parse(
 localStorage.getItem(key)
 )
 ||
 [];
 
+
+
+let items=root;
+
+
+
+if(folderIndex!==null){
+
+items=
+root[folderIndex].children;
+
+}
 
 
 
