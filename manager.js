@@ -565,3 +565,6 @@ render();
 
 
 render();
+
+
+console.log(supabaseClient);
