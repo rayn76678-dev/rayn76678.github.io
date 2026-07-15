@@ -1,156 +1,178 @@
-let params =
-new URLSearchParams(location.search);
+// ==============================
+// 参数
+// ==============================
 
+const params = new URLSearchParams(location.search);
 
 
-let space =
-params.get("space");
+const space = params.get("space");
 
+const type = params.get("type");
 
-let type =
-params.get("type");
 
+const folderId = params.get("folder");
 
-let folderIndex =
-params.get("folder");
 
+// 当前目录
+let currentFolder = folderId ? Number(folderId) : null;
 
 
-let key =
-space+"_"+type;
 
 
+// ==============================
+// 初始化
+// ==============================
 
-let root =
-JSON.parse(
-localStorage.getItem(key)
-)
-||
-[];
 
+document.getElementById("pageTitle").innerHTML =
+space + " / " + type;
 
 
 
+document.getElementById("backSpace").href =
+"space.html?name=" + space;
 
-document
-.getElementById("backSpace")
-.href =
-"space.html?name="+space;
 
 
-
-
-document
-.getElementById("pageTitle")
-.innerHTML =
-space+" / "+type;
-
-
-
-
-
-let current=root;
-
-
-
-if(folderIndex!==null){
-
-current =
-root[folderIndex].children;
-
-}
-
-
-
-
-
-
-let importBtn =
-document.getElementById("importBtn");
-
-
-
-if(type==="Website"){
-
-importBtn.innerHTML=
-"Import Website";
-
-
-}else{
-
-
-importBtn.innerHTML=
-"Import File";
-
-
-}
-
-
-
-
-
-importBtn.onclick=function(){
-
-
-if(type==="Website"){
-
-
-addWebsite();
-
-
-}else{
-
-
-chooseFile();
-
-
-}
-
-
-};
-
-
-
-
-
-
-
-
-
-function save(){
-
-
-localStorage.setItem(
-
-key,
-
-JSON.stringify(root)
-
-);
-
-
-}
-
-
-
-
-
-
-
-
-function render(){
-
-
-let box =
+const cards =
 document.getElementById("cards");
 
 
-box.innerHTML="";
+
+// ==============================
+// 菜单
+// ==============================
+
+
+function toggleMenu(){
+
+let menu =
+document.getElementById("addMenu");
+
+
+menu.style.display =
+menu.style.display === "block"
+?
+"none"
+:
+"block";
+
+}
 
 
 
-current.forEach(
-(item,index)=>{
+
+// ==============================
+// 加载内容
+// ==============================
+
+
+async function loadContent(){
+
+
+cards.innerHTML="";
+
+
+/*
+加载文件夹
+*/
+
+const {data:folders,error:folderError}
+=
+await supabaseClient
+.from("folders")
+.select("*")
+.eq("space",space)
+.eq("type",type);
+
+
+
+if(folderError){
+
+console.log(folderError);
+
+return;
+
+}
+
+
+
+
+folders
+.filter(
+f=>f.parent_id===currentFolder
+)
+.forEach(
+folder=>{
+
+
+createCard(
+folder,
+"folder"
+);
+
+
+});
+
+
+
+
+
+/*
+加载文件
+*/
+
+
+const {data:files,error:fileError}
+=
+await supabaseClient
+.from("files")
+.select("*")
+.eq("space",space);
+
+
+
+if(fileError){
+
+console.log(fileError);
+
+return;
+
+}
+
+
+
+files
+.filter(
+f=>f.folder_id===currentFolder
+)
+.forEach(
+file=>{
+
+
+createCard(
+file,
+"file"
+);
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+// ==============================
+// 卡片
+// ==============================
+
+
+function createCard(item,type){
 
 
 let card =
@@ -161,38 +183,20 @@ card.className="card";
 
 
 
-let icon;
-
-
-
-if(item.type==="folder"){
-
-icon="📁";
-
-}
-
-else if(item.type==="website"){
-
-icon="🌐";
-
-}
-
-else{
-
-icon="📄";
-
-}
-
-
+let icon =
+type==="folder"
+?
+"📁"
+:
+"📄";
 
 
 
 card.innerHTML=
-
 `
 
 <div class="menu"
-onclick="openMenu(event,${index})">
+onclick="openMenu(event,'${type}',${item.id})">
 
 ⋮
 
@@ -200,19 +204,19 @@ onclick="openMenu(event,${index})">
 
 
 <h3>
-
 ${icon}
-
 ${item.name}
-
 </h3>
 
 
 <p>
-
-${item.info || item.type}
-
+${type==="folder"
+?
+"Folder"
+:
+"File"}
 </p>
+
 
 `;
 
@@ -220,15 +224,12 @@ ${item.info || item.type}
 
 
 
-if(item.type==="folder"){
+// 文件夹点击
+
+if(type==="folder"){
 
 
 card.onclick=function(){
-
-
-let id =
-root.indexOf(item);
-
 
 
 location.href=
@@ -243,7 +244,8 @@ type
 +
 "&folder="
 +
-id;
+item.id;
+
 
 
 };
@@ -253,11 +255,32 @@ id;
 
 
 
-box.appendChild(card);
+
+// 文件点击
+
+else{
+
+
+card.onclick=function(){
+
+
+window.open(
+item.url,
+"_blank"
+);
+
+
+};
+
+
+}
 
 
 
-});
+
+
+cards.appendChild(card);
+
 
 
 }
@@ -268,35 +291,12 @@ box.appendChild(card);
 
 
 
+// ==============================
+// 新建文件夹
+// ==============================
 
 
-function toggleMenu(){
-
-
-let menu =
-document.getElementById("addMenu");
-
-
-
-menu.style.display =
-menu.style.display==="block"
-?
-"none"
-:
-"block";
-
-
-}
-
-
-
-
-
-
-
-
-
-function createFolder(){
+async function createFolder(){
 
 
 let name =
@@ -311,71 +311,36 @@ return;
 
 
 
-current.push({
-
-type:"folder",
+const {error}
+=
+await supabaseClient
+.from("folders")
+.insert({
 
 name:name,
 
-children:[]
+parent_id:currentFolder,
+
+space:space,
+
+type:type
 
 });
 
 
 
-save();
+if(error){
 
-render();
+alert(error.message);
 
-
-}
-
-
-
-
-
-
-
-
-
-
-function addWebsite(){
-
-
-let name =
-prompt(
-"Website name:"
-);
-
-
-
-let url =
-prompt(
-"Website URL:"
-);
-
-
-
-if(!name||!url)
 return;
 
-
-
-current.push({
-
-type:"website",
-
-name:name,
-
-info:url
-
-});
+}
 
 
 
-save();
+loadContent();
 
-render();
 
 
 }
@@ -386,15 +351,16 @@ render();
 
 
 
+// ==============================
+// 上传文件
+// ==============================
 
 
-function chooseFile(){
+async function chooseFile(){
 
 
 let input =
-document.getElementById(
-"fileInput"
-);
+document.getElementById("fileInput");
 
 
 
@@ -402,8 +368,8 @@ input.click();
 
 
 
-input.onchange=function(){
-
+input.onchange =
+async function(){
 
 
 let file =
@@ -416,21 +382,97 @@ return;
 
 
 
-current.push({
+let path =
+Date.now()
++
+"_"
++
+file.name;
 
-type:"file",
+
+
+// 上传 Storage
+
+
+let {data,error}
+=
+await supabaseClient
+.storage
+.from("files")
+.upload(
+path,
+file
+);
+
+
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+
+
+
+// 获取公开URL
+
+
+let {data:urlData}
+=
+supabaseClient
+.storage
+.from("files")
+.getPublicUrl(path);
+
+
+
+let url =
+urlData.publicUrl;
+
+
+
+
+// 写入数据库
+
+
+const {error:dbError}
+=
+await supabaseClient
+.from("files")
+.insert({
 
 name:file.name,
 
-info:file.type || "File"
+url:url,
+
+path:path,
+
+space:space,
+
+folder_id:currentFolder
+
 
 });
 
 
 
-save();
+if(dbError){
 
-render();
+alert(dbError.message);
+
+return;
+
+}
+
+
+
+alert("Upload success");
+
+
+loadContent();
 
 
 
@@ -447,83 +489,31 @@ render();
 
 
 
+// ==============================
+// 右键菜单
+// ==============================
 
-function openMenu(e,index){
+
+function openMenu(e,type,id){
 
 
 e.stopPropagation();
 
 
 
-let menu =
-document.createElement("div");
-
-
-menu.className="popup";
-
-
-menu.innerHTML=
-
-`
-
-<div onclick="renameItem(${index})">
-
-Rename
-
-</div>
-
-
-<div onclick="deleteItem(${index})">
-
-Delete
-
-</div>
-
-`;
-
-
-
-e.target.parentElement
-.appendChild(menu);
-
-
-
-}
-
-
-
-
-
-
-
-
-
-function renameItem(index){
-
-
-let name =
-prompt(
-
-"New name:",
-
-current[index].name
-
+let choice =
+confirm(
+"Delete this item?"
 );
 
 
 
-if(name){
+if(!choice)
+return;
 
 
-current[index].name=name;
 
-
-save();
-
-render();
-
-
-}
+deleteItem(type,id);
 
 
 }
@@ -532,30 +522,39 @@ render();
 
 
 
+async function deleteItem(type,id){
+
+
+if(type==="folder"){
+
+
+await supabaseClient
+.from("folders")
+.delete()
+.eq("id",id);
 
 
 
+}
+
+else{
 
 
-function deleteItem(index){
+await supabaseClient
+.from("files")
+.delete()
+.eq("id",id);
 
-
-if(confirm(
-"Delete this item?"
-)){
-
-
-current.splice(index,1);
-
-
-save();
-
-render();
 
 
 }
 
 
+
+loadContent();
+
+
+
 }
 
 
@@ -563,8 +562,9 @@ render();
 
 
 
+// ==============================
+// 页面启动
+// ==============================
 
-render();
 
-
-console.log(supabaseClient);
+loadContent();
